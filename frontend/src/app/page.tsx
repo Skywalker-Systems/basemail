@@ -1,4 +1,3 @@
-import Image from "next/image";
 
 export default function Home() {
   return (
@@ -7,8 +6,7 @@ export default function Home() {
         <h1>Hello World</h1>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        
-       
+
       </footer>
     </div>
   );
