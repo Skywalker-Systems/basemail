@@ -27,7 +27,7 @@ export function MailList({ emails, selectedEmail, onSelectEmail, onPlayAudio, vi
           >
             <button onClick={() => onSelectEmail(email)} className="flex-1 text-left">
               <div className="flex items-start justify-between gap-2">
-                <span className="font-medium text-foreground">{email.from}</span>
+                <span className="font-medium text-foreground">{email.from.replace('@basemail.me', '.base.eth')}</span>
                 <span className="text-xs text-muted-foreground">{email.date}</span>
               </div>
               <div className="flex flex-col gap-1">
