@@ -27,7 +27,7 @@ export function MailList({ emails, selectedEmail, onSelectEmail, onPlayAudio, vi
         {filteredEmails.map((email) => (
           <div
             key={email.sk}
-            className={`flex items-center justify-between border-b border-border p-4 transition-colors hover:bg-accent ${selectedEmail?.sk === email.sk ? "bg-primary" : ""
+            className={`flex items-center justify-between border-b border-border p-4 transition-colors hover:bg-accent ${selectedEmail?.sk === email.sk ? "bg-primary/10" : ""
               }`}
           >
             <button onClick={() => onSelectEmail(email)} className="flex-1 text-left">

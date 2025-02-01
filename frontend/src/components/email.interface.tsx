@@ -14,7 +14,7 @@ export function EmailInterface({ emails }: { emails: Email[] }) {
   const [currentAudioUrl, setCurrentAudioUrl] = useState<string | null>(null)
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen relative">
       <MailSidebar />
       <div className="flex flex-1 flex-col">
         {/* <AISummaryBanner /> */}
@@ -29,7 +29,6 @@ export function EmailInterface({ emails }: { emails: Email[] }) {
           />
           <MailView
             email={selectedEmail}
-  
           />
         </div>
       </div>
