@@ -1,5 +1,6 @@
 import '@/app/globals.css'
 import Nav from '@/components/navigation'
+import { Toaster } from '@/components/ui/toaster'
 import { cn } from '@/lib/utils'
 import { WalletProvider } from '@/lib/wallet-provider'
 import { ClerkProvider } from '@clerk/nextjs'
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </header>
             <main className="mt-20">{children}</main>
           </body>
+          <Toaster />
         </html>
       </WalletProvider>
     </ClerkProvider>

@@ -3,11 +3,45 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { useToast } from "@/hooks/use-toast"
 import { Mail } from "lucide-react"
 import { useState } from "react"
+import { sendEmail } from "./actions"
 
 function ComposeButton() {
     const [open, setOpen] = useState(false)
+    const { toast } = useToast()
+    const [to, setTo] = useState("")
+    const [subject, setSubject] = useState("")
+    const [body, setBody] = useState("")
+
+    const handleSendEmail = () => {
+        if (!to) {
+            toast({
+                title: "Error",
+                description: "Please specify at least one recipient",
+                variant: "destructive",
+            })
+            return
+        }
+
+        sendEmail({
+            to,
+            subject,
+            body,
+        })
+
+        toast({
+            title: "Email sent",
+            description: "Your message has been sent successfully.",
+        })
+        setOpen(false)
+
+        // Reset form
+        setTo("")
+        setSubject("")
+        setBody("")
+    }
 
     return (
         <>
@@ -34,6 +68,8 @@ function ComposeButton() {
                                         type="text"
                                         placeholder="Recipients"
                                         className="border-0 focus-visible:ring-0 px-0"
+                                        value={to}
+                                        onChange={(e) => setTo(e.target.value)}
                                     />
                                 </div>
                                 <div className="flex items-center border-b">
@@ -41,6 +77,8 @@ function ComposeButton() {
                                         type="text"
                                         placeholder="Subject"
                                         className="border-0 focus-visible:ring-0 px-0"
+                                        value={subject}
+                                        onChange={(e) => setSubject(e.target.value)}
                                     />
                                 </div>
                             </div>
@@ -50,13 +88,15 @@ function ComposeButton() {
                                 <Textarea
                                     placeholder="Write your message here..."
                                     className="h-full resize-none border-0 focus-visible:ring-0"
+                                    value={body}
+                                    onChange={(e) => setBody(e.target.value)}
                                 />
                             </div>
                         </div>
 
                         <div className="p-4 border-t">
                             <div className="flex gap-2">
-                                <Button>Send</Button>
+                                <Button onClick={handleSendEmail}>Send</Button>
                                 <Button variant="ghost" onClick={() => setOpen(false)}>
                                     Discard
                                 </Button>

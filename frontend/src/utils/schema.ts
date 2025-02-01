@@ -78,7 +78,7 @@ export async function getMail() {
     }
 }
 
-export async function sendEmail(email: Partial<Email>) {
+export async function putEmail(email: Partial<Email>) {
     const { getToken } = await auth();
     const token = await getToken();
 
