@@ -32,7 +32,7 @@ export function MailList({ emails, selectedEmail, onSelectEmail, onPlayAudio, vi
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-sm text-foreground">{email.subject}</span>
-                <span className="text-xs text-muted-foreground line-clamp-2">{email.body}</span>
+                <span className="text-xs text-muted-foreground line-clamp-2">{email.summarizedEmail}</span>
               </div>
               {email.tags && email.tags.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-1">

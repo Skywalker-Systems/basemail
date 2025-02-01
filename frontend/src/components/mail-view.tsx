@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Textarea } from "@/components/ui/textarea"
 import { Email } from "@/utils/schema"
 import { useState } from "react"
+import { sendReply } from "./actions"
 
 interface MailViewProps {
   email: Email | null
@@ -19,11 +20,6 @@ export function MailView({ email }: MailViewProps) {
         Select an email to read
       </div>
     )
-  }
-
-  const handleSendReply = () => {
-    // onSendReply(replyContent)
-    setReplyContent("")
   }
 
   return (
@@ -56,7 +52,7 @@ export function MailView({ email }: MailViewProps) {
                 </div>
               )}
             </div>
-            <div className="mt-8 whitespace-pre-wrap text-sm text-foreground">{email.body}</div>
+            <div className="mt-8 whitespace-pre-wrap text-sm text-foreground">{email.summarizedEmail}</div>
             <div className="mt-8">
               <Textarea
                 placeholder="Write your reply..."
@@ -64,7 +60,7 @@ export function MailView({ email }: MailViewProps) {
                 onChange={(e) => setReplyContent(e.target.value)}
                 className="min-h-[100px]"
               />
-              <Button onClick={handleSendReply} className="mt-4">
+              <Button onClick={async () => await sendReply(email, replyContent)} className="mt-4">
                 Send Reply
               </Button>
             </div>
