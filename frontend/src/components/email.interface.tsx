@@ -29,19 +29,7 @@ export function EmailInterface({ emails }: { emails: Email[] }) {
           />
           <MailView
             email={selectedEmail}
-          // onSendReply={(replyContent) =>
-          //   sendEmail({
-          //     to: selectedEmail?.from,
-          //     from: "user@example.com",
-          //     subject: `Re: ${selectedEmail?.subject}`,
-          //     content: replyContent,
-          //     preview: replyContent.substring(0, 100),
-          //     timestamp: new Date().toISOString(),
-          //     read: true,
-          //     tags: ["sent"],
-          //   })
-          //   }
-          // onSummarize={() => selectedEmail && summarizeEmail(selectedEmail)}
+  
           />
         </div>
       </div>
