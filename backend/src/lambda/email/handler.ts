@@ -499,7 +499,7 @@ function optimizeEmailContent(email: ParsedMail): string {
     }
     if (email.to) {
         const toText = Array.isArray(email.to)
-            ? email.to.map(addr => addr.text).join(', ')
+            ? email.to.map((addr: any) => addr.text).join(', ')
             : email.to.text;
         emailParts.push(`To: ${toText}`);
     }
@@ -510,7 +510,7 @@ function optimizeEmailContent(email: ParsedMail): string {
     // Add information about attachments if they exist
     if (email.attachments && email.attachments.length > 0) {
         const attachmentNames = email.attachments
-            .map(attachment => attachment.filename)
+            .map((attachment: any) => attachment.filename)
             .filter(Boolean);
         emailParts.push(`Attachments: ${attachmentNames.join(', ')}`);
     }

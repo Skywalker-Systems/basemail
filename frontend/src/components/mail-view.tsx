@@ -22,11 +22,12 @@ export function MailView({ email }: MailViewProps) {
   const [replyContent, setReplyContent] = useState("")
   const [localEmail, setLocalEmail] = useState<Email | null>(null)
   const [showFullEmail, setShowFullEmail] = useState(false)
-  const { isSignedIn } = useUser()
+  const { isSignedIn, user } = useUser()
 
+  const websocketUrl = isSignedIn && user ? `${wsUrl}?userId=${user.id}` : ''
   const { status: wsStatus } = useWebSocket({
-    url: isSignedIn ? wsUrl || '' : '',
-    enabled: isSignedIn && !!wsUrl,
+    url: websocketUrl,
+    enabled: isSignedIn && !!websocketUrl,
     onMessage: async (data: any) => {
       const message = JSON.parse(JSON.stringify(data));
       const _message = message;
