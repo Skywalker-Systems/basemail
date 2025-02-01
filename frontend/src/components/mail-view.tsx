@@ -5,6 +5,8 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Textarea } from "@/components/ui/textarea"
 import { Email } from "@/utils/schema"
 import { Avatar } from '@coinbase/onchainkit/identity'
+import { ArrowsPointingInIcon, ArrowsPointingOutIcon } from "@heroicons/react/24/outline"
+import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { sendReply } from "./actions"
 
@@ -15,6 +17,7 @@ interface MailViewProps {
 export function MailView({ email }: MailViewProps) {
   const [replyContent, setReplyContent] = useState("")
   const [localEmail, setLocalEmail] = useState<Email | null>(null)
+  const [showFullEmail, setShowFullEmail] = useState(false)
 
   useEffect(() => {
     setLocalEmail(email)
@@ -60,15 +63,45 @@ export function MailView({ email }: MailViewProps) {
               )}
             </div>
             <div className="mt-8 space-y-6">
-              <div className="whitespace-pre-wrap text-sm text-foreground">{localEmail.summarizedEmail}</div>
+              <div className="relative">
+                <div className="flex justify-between items-center mb-4">
+                  <div className="w-full" />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowFullEmail(!showFullEmail)}
+                    className="flex items-center gap-2 shrink-0"
+                  >
+                    {showFullEmail ? (
+                      <ArrowsPointingInIcon className="h-4 w-4" />
+                    ) : (
+                      <ArrowsPointingOutIcon className="h-4 w-4" />
+                    )}
+                    {showFullEmail ? 'Show Summary' : 'Show Full Email'}
+                  </Button>
+                </div>
+
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={showFullEmail ? 'full' : 'summary'}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.2 }}
+                    className="whitespace-pre-wrap text-sm text-foreground"
+                  >
+                    {showFullEmail ? localEmail.body : localEmail.summarizedEmail}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
 
               {localEmail.replies?.map((reply, index) => (
                 <div key={index} className="mt-4 border-l-2 border-primary pl-4">
                   <div className="text-xs text-muted-foreground">
-                    {reply.from} - {new Date(reply.timestamp).toLocaleString()}
+                    {reply.from} - {new Date(reply.date).toLocaleString()}
                   </div>
                   <div className="mt-1 whitespace-pre-wrap text-sm text-foreground">
-                    {reply.content}
+                    {reply.body}
                   </div>
                 </div>
               ))}
@@ -86,8 +119,8 @@ export function MailView({ email }: MailViewProps) {
                     setLocalEmail(prev => prev ? {
                       ...prev,
                       replies: [...(prev.replies || []), {
-                        content: replyContent,
-                        timestamp: new Date().toISOString(),
+                        body: replyContent,
+                        date: new Date().toISOString(),
                         from: "You"
                       }]
                     } : null);

@@ -40,8 +40,8 @@ export const mailSchema = z.object({
     date: z.string(),
     body: z.string(),
     replies: z.array(z.object({
-        content: z.string(),
-        timestamp: z.string(),
+        body: z.string(),
+        date: z.string(),
         from: z.string(),
     })).optional(),
 });
