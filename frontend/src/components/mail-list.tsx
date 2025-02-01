@@ -5,6 +5,11 @@ import { Email } from "@/utils/schema"
 // import type { Email } from "@/types/email"
 import { Play } from "lucide-react"
 
+const formatEmailTime = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
+
 interface MailListProps {
   emails: Email[]
   selectedEmail: Email | null
@@ -28,7 +33,7 @@ export function MailList({ emails, selectedEmail, onSelectEmail, onPlayAudio, vi
             <button onClick={() => onSelectEmail(email)} className="flex-1 text-left">
               <div className="flex items-start justify-between gap-2">
                 <span className="font-medium text-foreground">{email.from}</span>
-                <span className="text-xs text-muted-foreground">{email.date}</span>
+                <span className="text-xs text-muted-foreground">{formatEmailTime(email.date)}</span>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-sm text-foreground">{email.subject}</span>
