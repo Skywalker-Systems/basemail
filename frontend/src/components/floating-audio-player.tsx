@@ -40,7 +40,7 @@ export function FloatingAudioPlayer({ audioUrl, onClose }: FloatingAudioPlayerPr
   if (!audioUrl) return null
 
   return (
-    <Card className="fixed bottom-4 right-4 flex items-center space-x-4 p-4">
+    <Card className="fixed bottom-4 right-4 flex items-center space-x-4 p-4 z-50 bg-pink-500">
       <Button variant="ghost" size="icon" onClick={togglePlayPause}>
         {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}
       </Button>
