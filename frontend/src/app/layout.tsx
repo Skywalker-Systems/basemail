@@ -1,8 +1,8 @@
+import '@/app/globals.css'
+import Nav from '@/components/navigation'
+import { cn } from '@/lib/utils'
 import { ClerkProvider } from '@clerk/nextjs'
-import Nav from '../components/Nav'
 import { Plus_Jakarta_Sans } from "next/font/google"
-import './globals.css'
-import { cn } from './lib/utils'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={cn(plusJakartaSans.variable, " bg-pink-500 font-sans antialiased bg-background text-foreground antialiased")}>
+        <body className={cn(plusJakartaSans.variable, 'font-sans antialiased bg-background text-foreground')}>
           <header>
             <Nav />
           </header>
