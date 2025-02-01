@@ -1,5 +1,6 @@
+import { ComposeToolbar } from "@/components/compose-toolbar"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Mail } from "lucide-react"
@@ -20,6 +21,7 @@ function ComposeButton() {
 
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent className="sm:max-w-[700px] p-0">
+                    <DialogTitle className="sr-only">Compose new email</DialogTitle>
                     <div className="flex flex-col h-[600px]">
                         <div className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-t-lg">
                             <h2 className="text-sm font-medium">New Message</h2>
@@ -44,6 +46,7 @@ function ComposeButton() {
                             </div>
 
                             <div className="flex-1">
+                                <ComposeToolbar />
                                 <Textarea
                                     placeholder="Write your message here..."
                                     className="h-full resize-none border-0 focus-visible:ring-0"

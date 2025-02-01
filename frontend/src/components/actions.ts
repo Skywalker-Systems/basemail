@@ -6,3 +6,8 @@ export async function sendReply(email: string, replyContent: string): Promise<Pa
     const emailToSend = await putReply(email, replyContent);
     return emailToSend;
 }
+
+export async function sendEmail(email: Partial<Email>): Promise<Partial<Email>> {
+    const emailToSend = await sendEmail(email);
+    return emailToSend;
+}
