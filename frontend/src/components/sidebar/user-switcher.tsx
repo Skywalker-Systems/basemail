@@ -23,7 +23,7 @@ export function UserSwitcher() {
           </Avatar>
           <span className="text-sm">{users[0].name}</span>
         </div>
-        <ChevronDown className="h-4 w-4" />
+        {/* <ChevronDown className="h-4 w-4" /> */}
       </SelectTrigger>
       <SelectContent>
         {users.map((user) => (

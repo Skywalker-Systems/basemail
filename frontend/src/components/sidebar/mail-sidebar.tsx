@@ -1,7 +1,9 @@
-import { Archive, File, Inbox, MessageSquare, ShoppingCart, Trash, Send, Clock, Tags } from "lucide-react"
-import { NavGroup } from "@/components/sidebar/nav-group"
-import { NavItem } from "@/components/sidebar/nav-item"
-import { UserSwitcher } from "@/components/sidebar/user-switcher"
+import { Archive, File, Inbox, MessageSquare, ShoppingCart, Trash, Send, Clock, Tags, Headphones } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { NavGroup } from "./nav-group"
+import { NavItem } from "./nav-item"
+import { UserSwitcher } from "./user-switcher"
+import { AudioControls } from "../audio-controls"
 
 const mainNavigation = [
   { icon: Inbox, label: "Inbox", count: 128 },
@@ -20,9 +22,25 @@ const categories = [
   { icon: Tags, label: "Promotions", count: 21 },
 ]
 
-export function MailSidebar() {
+interface MailSidebarProps {
+  onSummarizeAll: () => void
+  isAudioPlaying: boolean
+  onPlayAudio: () => void
+  onPauseAudio: () => void
+  onStopAudio: () => void
+  isSummarizing: boolean
+}
+
+export function MailSidebar({
+  onSummarizeAll,
+  isAudioPlaying,
+  onPlayAudio,
+  onPauseAudio,
+  onStopAudio,
+  isSummarizing,
+}: MailSidebarProps) {
   return (
-    <div className="flex w-[280px] flex-col gap-6 border-r border-border bg-card p-4">
+    <div className="flex w-[280px] flex-col gap-6 bg-card p-4">
       <UserSwitcher />
       <nav className="flex flex-1 flex-col gap-4">
         <NavGroup>
@@ -36,6 +54,16 @@ export function MailSidebar() {
           ))}
         </NavGroup>
       </nav>
+      <div className="mt-auto">
+        {isAudioPlaying ? (
+          <AudioControls isPlaying={isAudioPlaying} onPlay={onPlayAudio} onPause={onPauseAudio} onStop={onStopAudio} />
+        ) : (
+          <Button variant="outline" className="w-full justify-start" onClick={onSummarizeAll} disabled={isSummarizing}>
+            <Headphones className="mr-2 h-4 w-4" />
+            {isSummarizing ? "Summarizing..." : "Summarize All Mail"}
+          </Button>
+        )}
+      </div>
     </div>
   )
 }

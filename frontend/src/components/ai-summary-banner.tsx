@@ -7,7 +7,7 @@ interface AISummaryBannerProps {
 
 export function AISummaryBanner({ onSummarize }: AISummaryBannerProps) {
   return (
-    <div className="bg-blue-100 text-blue-900 px-4 py-3 sm:px-6 lg:px-8">
+    <div className="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 text-foreground px-4 py-3 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Sparkles className="h-5 w-5 text-blue-500" />
