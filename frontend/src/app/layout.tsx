@@ -22,8 +22,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Nav />
             </header>
             <main className="mt-20">{children}</main>
+            <Toaster />
           </body>
-          <Toaster />
         </html>
       </WalletProvider>
     </ClerkProvider>
