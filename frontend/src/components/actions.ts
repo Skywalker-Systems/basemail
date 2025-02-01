@@ -1,15 +1,8 @@
 "use server"
 
-import { Email, sendEmail } from "@/utils/schema"
+import { Email, putReply } from "@/utils/schema";
 
-export async function sendReply(email: Email, replyContent: string) {
-    await sendEmail({
-        to: email.to,
-        from: email.from,
-        subject: `Re: ${email.subject}`,
-        body: replyContent,
-        date: new Date().toISOString(),
-        read: true,
-        tags: [],
-    })
+export async function sendReply(email: string, replyContent: string): Promise<Partial<Email>> {
+    const emailToSend = await putReply(email, replyContent);
+    return emailToSend;
 }

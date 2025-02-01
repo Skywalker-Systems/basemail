@@ -1,4 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
+import { revalidateTag } from "next/cache";
 import { z } from "zod";
 
 export const API_URL = process.env.API_URL;
@@ -23,8 +24,10 @@ export const mailSchema = z.object({
     optimizedContentKey: z.string().optional(),
     from: z.string(),
     sk: z.string(),
+    wallet: z.string().optional(),
     pk: z.string(),
     inboxId: z.string(),
+    rawAddress: z.string(),
     to: z.string(),
     tags: z.array(z.string()),
     links: z.array(z.string()),
@@ -35,7 +38,12 @@ export const mailSchema = z.object({
     attachments: z.array(attachmentSchema),
     subject: z.string(),
     date: z.string(),
-    body: z.string()
+    body: z.string(),
+    replies: z.array(z.object({
+        content: z.string(),
+        timestamp: z.string(),
+        from: z.string(),
+    })).optional(),
 });
 
 export type Attachment = z.infer<typeof attachmentSchema>;
@@ -49,7 +57,7 @@ export async function getMail() {
     try {
         console.log(`Fetching emails, ${API_URL}/mail`);
         const res = await fetch(`${API_URL}/mail`, {
-            next: { revalidate: 60 },
+            next: { revalidate: 60, tags: ["mail"] },
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`
@@ -75,33 +83,52 @@ export async function sendEmail(email: Partial<Email>) {
     const token = await getToken();
 
     try {
+        console.log(`Sending email, ${API_URL}/mail`);
         const res = await fetch(`${API_URL}/mail`, {
             method: "POST",
+            body: JSON.stringify(email),
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
+        console.log(JSON.stringify(res));
+        if (!res.ok) {
+            throw new Error(`Failed to send email ${res.status} - ${res.ok}`);
+        }
+        revalidateTag("mail");
+
+        return res.json();
     } catch (error) {
         console.log(`Failed to send email ${error}`);
     }
 }
 
-export async function putEmail(email: Partial<Email>) {
+export async function putReply(email: string, replyContent: string) {
     const { getToken } = await auth();
     const token = await getToken();
 
     try {
-        const res = await fetch(`${API_URL}/mail?mailId=${email}`, {
+        const url = `${API_URL}/mail`
+        console.log(url);
+        const res = await fetch(url, {
             method: "PUT",
             headers: {
                 Authorization: `Bearer ${token}`,
-                body: JSON.stringify({
-                    read: true
-                })
-            }
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailId: email,
+                reply: replyContent
+            })
         });
+        console.log(JSON.stringify(res));
+        if (!res.ok) {
+            throw new Error(`Failed to send reply ${res.status} - ${res.ok}`);
+        }
+        revalidateTag("mail");
+        return res.json();
     } catch (error) {
-        console.log(`Failed to update email ${error}`);
+        console.log(`Failed to send reply ${error}`);
     }
 
 }
