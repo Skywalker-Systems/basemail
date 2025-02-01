@@ -90,7 +90,7 @@ export function MailView({ email }: MailViewProps) {
                     transition={{ duration: 0.2 }}
                     className="whitespace-pre-wrap text-sm text-foreground"
                   >
-                    {showFullEmail ? localEmail.body : localEmail.summarizedEmail}
+                    {showFullEmail || !localEmail.summarizedEmail ? localEmail.body : localEmail.summarizedEmail}
                   </motion.div>
                 </AnimatePresence>
               </div>
