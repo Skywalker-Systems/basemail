@@ -1,8 +1,9 @@
 import { Badge } from "@/components/ui/badge"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Email } from "@/utils/schema"
+// import type { Email } from "@/types/email"
 import { Play } from "lucide-react"
-import type { Email } from "@/types/email"
 
 interface MailListProps {
   emails: Email[]
@@ -21,18 +22,17 @@ export function MailList({ emails, selectedEmail, onSelectEmail, onPlayAudio, vi
         {filteredEmails.map((email) => (
           <div
             key={email.id}
-            className={`flex items-center justify-between border-b border-border p-4 transition-colors hover:bg-accent ${
-              selectedEmail?.id === email.id ? "bg-primary" : ""
-            }`}
+            className={`flex items-center justify-between border-b border-border p-4 transition-colors hover:bg-accent ${selectedEmail?.id === email.id ? "bg-primary" : ""
+              }`}
           >
             <button onClick={() => onSelectEmail(email)} className="flex-1 text-left">
               <div className="flex items-start justify-between gap-2">
                 <span className="font-medium text-foreground">{email.from}</span>
-                <span className="text-xs text-muted-foreground">{email.timestamp}</span>
+                <span className="text-xs text-muted-foreground">{email.date}</span>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-sm text-foreground">{email.subject}</span>
-                <span className="text-xs text-muted-foreground line-clamp-2">{email.preview}</span>
+                <span className="text-xs text-muted-foreground line-clamp-2">{email.body}</span>
               </div>
               {email.tags && email.tags.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-1">
@@ -44,12 +44,12 @@ export function MailList({ emails, selectedEmail, onSelectEmail, onPlayAudio, vi
                 </div>
               )}
             </button>
-            {email.audioSummaryUrl && (
+            {(
               <Button
                 variant="ghost"
                 size="icon"
                 className="ml-2 flex-shrink-0"
-                onClick={() => onPlayAudio(email.audioSummaryUrl!)}
+              // onClick={() => onPlayAudio(email.audioSummaryUrl!)}
               >
                 <Play className="h-4 w-4" />
               </Button>

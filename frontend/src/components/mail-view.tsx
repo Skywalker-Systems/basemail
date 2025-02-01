@@ -1,19 +1,16 @@
-import { useState } from "react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
-import { Play } from "lucide-react"
-import type { Email } from "@/types/email"
+import { Button } from "@/components/ui/button"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Textarea } from "@/components/ui/textarea"
+import { Email } from "@/utils/schema"
+import { useState } from "react"
 
 interface MailViewProps {
   email: Email | null
-  onSendReply: (content: string) => void
-  onSummarize: () => void
 }
 
-export function MailView({ email, onSendReply, onSummarize }: MailViewProps) {
+export function MailView({ email }: MailViewProps) {
   const [replyContent, setReplyContent] = useState("")
 
   if (!email) {
@@ -25,7 +22,7 @@ export function MailView({ email, onSendReply, onSummarize }: MailViewProps) {
   }
 
   const handleSendReply = () => {
-    onSendReply(replyContent)
+    // onSendReply(replyContent)
     setReplyContent("")
   }
 
@@ -44,15 +41,11 @@ export function MailView({ email, onSendReply, onSummarize }: MailViewProps) {
           <div className="flex-1">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-semibold text-foreground">{email.subject}</h2>
-              <Button variant="outline" size="sm" onClick={onSummarize}>
-                <Play className="mr-2 h-4 w-4" />
-                Summarize
-              </Button>
             </div>
             <div className="mt-2">
               <div className="text-sm font-medium text-foreground">{email.from}</div>
-              {email.replyTo && <div className="text-xs text-muted-foreground">Reply-To: {email.replyTo}</div>}
-              <div className="text-xs text-muted-foreground">{email.timestamp}</div>
+              {email.from && <div className="text-xs text-muted-foreground">Reply-To: {email.from}</div>}
+              <div className="text-xs text-muted-foreground">{email.date}</div>
               {email.tags && email.tags.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-1">
                   {email.tags.map((tag) => (
@@ -63,7 +56,7 @@ export function MailView({ email, onSendReply, onSummarize }: MailViewProps) {
                 </div>
               )}
             </div>
-            <div className="mt-8 whitespace-pre-wrap text-sm text-foreground">{email.content || email.preview}</div>
+            <div className="mt-8 whitespace-pre-wrap text-sm text-foreground">{email.body}</div>
             <div className="mt-8">
               <Textarea
                 placeholder="Write your reply..."
