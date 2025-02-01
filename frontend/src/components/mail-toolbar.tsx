@@ -1,6 +1,5 @@
-import { Archive, Clock, Trash } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import ComposeButton from "./compose-button"
 
 interface MailToolbarProps {
   view: "all" | "unread"
@@ -35,11 +34,7 @@ export function MailToolbar({ view, onViewChange }: MailToolbarProps) {
         </ToggleGroup>
       </div>
       <div className="flex items-center gap-2">
-        {[Archive, Clock, Trash].map((Icon, i) => (
-          <Button key={i} variant="ghost" size="icon" className="text-muted-foreground hover:bg-muted">
-            <Icon className="h-4 w-4" />
-          </Button>
-        ))}
+        <ComposeButton />
       </div>
     </div>
   )
