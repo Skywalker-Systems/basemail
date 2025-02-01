@@ -20,9 +20,10 @@ export const inboxSchema = z.object({
 });
 
 export const mailSchema = z.object({
-    id: z.string(),
     optimizedContentKey: z.string().optional(),
     from: z.string(),
+    sk: z.string(),
+    pk: z.string(),
     inboxId: z.string(),
     to: z.string(),
     tags: z.array(z.string()),
@@ -46,14 +47,16 @@ export async function getMail() {
     const token = await getToken();
 
     try {
+        console.log(`Fetching emails, ${API_URL}/mail`);
         const res = await fetch(`${API_URL}/mail`, {
-            next: { revalidate: 3600 },
-            cache: "force-cache",
+            next: { revalidate: 60 },
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
+        console.log(JSON.stringify(res));
+
         if (!res.ok) {
             throw new Error(`Failed to fetch emails data ${res.status} - ${res.ok}`);
         }
