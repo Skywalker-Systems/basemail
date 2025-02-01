@@ -32,7 +32,7 @@ export const mailSchema = z.object({
 
 export type User = z.infer<typeof userSchema>;
 
-export async function getEmails() {
+export async function getMail() {
     try {
         const res = await fetch(`${API_URL}/mail`, {
             next: { revalidate: 3600 },
