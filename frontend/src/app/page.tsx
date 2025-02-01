@@ -79,9 +79,9 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <CardTitle className="text-2xl">Build your onchain identity</CardTitle>
+                  <CardTitle className="text-2xl">Your onchain identity gets an inbox</CardTitle>
                   <CardDescription className="text-gray-600">
-                    Use your Basename as your onchain identity in the Base ecosystem.
+                    Use your Basename as your onchain identity and your inbox.
                   </CardDescription>
                 </div>
               </CardContent>
@@ -98,9 +98,9 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <CardTitle className="text-2xl">Simplify transactions</CardTitle>
+                  <CardTitle className="text-2xl">Your emails wallet</CardTitle>
                   <CardDescription className="text-gray-600">
-                    Send and receive seamlessly with a readable and memorable Basename.
+                    Send and receive seamlessly just by simply using your email.
                   </CardDescription>
                 </div>
               </CardContent>
@@ -117,9 +117,9 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <CardTitle className="text-2xl">Connect and collaborate</CardTitle>
+                  <CardTitle className="text-2xl">Trust & Verify</CardTitle>
                   <CardDescription className="text-gray-600">
-                    Easily find mentors and others to build with by seeing their profiles.
+                    Verify any official emails with a simple click.
                   </CardDescription>
                 </div>
               </CardContent>

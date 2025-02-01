@@ -9,6 +9,12 @@ export function WalletProvider(props: { children: ReactNode }) {
         <OnchainKitProvider
             apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
             chain={base} // add baseSepolia for testing
+            config={{ 
+                appearance: { 
+                  mode: 'auto', // 'auto' | 'light' | 'dark'
+                  theme: 'base', // 'default' | 'base' | 'cyberpunk' | 'hacker'
+                }, 
+              }}
         >
             {props.children}
         </OnchainKitProvider>

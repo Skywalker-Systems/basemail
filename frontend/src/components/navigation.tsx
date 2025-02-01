@@ -8,7 +8,7 @@ import {
 export default function Nav() {
   return (
     <>
-      <nav className="flex justify-between items-center p-4">
+      <nav className="flex justify-between items-center p-4 absolute top-0 left-0 right-0 z-10">
         <SignedOut>
           <SignInButton />
         </SignedOut>

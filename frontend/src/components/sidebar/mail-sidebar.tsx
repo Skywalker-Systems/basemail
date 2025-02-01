@@ -2,7 +2,7 @@ import { Archive, File, Inbox, MessageSquare, ShoppingCart, Trash, Send, Clock, 
 import { Button } from "@/components/ui/button"
 import { NavGroup } from "./nav-group"
 import { NavItem } from "./nav-item"
-import { UserSwitcher } from "./user-switcher"
+
 import { AudioControls } from "../audio-controls"
 
 const mainNavigation = [
@@ -41,7 +41,7 @@ export function MailSidebar({
 }: MailSidebarProps) {
   return (
     <div className="flex w-[280px] flex-col gap-6 bg-card p-4">
-      <UserSwitcher />
+      
       <nav className="flex flex-1 flex-col gap-4">
         <NavGroup>
           {mainNavigation.map((item) => (

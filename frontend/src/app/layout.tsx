@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <header>
               <Nav />
             </header>
-            <main>{children}</main>
+            <main className="mt-20">{children}</main>
           </body>
         </html>
       </WalletProvider>
