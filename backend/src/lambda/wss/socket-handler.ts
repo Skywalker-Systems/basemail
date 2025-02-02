@@ -12,6 +12,7 @@ const sqsClient = new SQSClient()
 interface Connection {
     pk: string;
     sk: string;
+    socketConnectionId: string
     connectionId: string;
     userId: string;
     ttl: number;
@@ -23,6 +24,7 @@ const handleConnectSetup = async (connectionId: string, userId: string) => {
     try {
         await putItem<Connection>({
             connectionId: `USER#${userId}`,
+            socketConnectionId: connectionId,
             userId,
             ttl: 60 * 60 * 24 * 30, // 30 days
             typename: 'Connection'
