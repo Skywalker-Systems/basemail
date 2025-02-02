@@ -30,7 +30,7 @@ export function MailView({ email }: MailViewProps) {
     onMessage: async (data: any) => {
       const message = JSON.parse(JSON.stringify(data));
       console.log(message)
-      revalidateMail()
+      await revalidateMail()
     },
     onConnect: () => console.log(`Connected to host`),
     onDisconnect: () => console.log(`Disconnected from host`)
