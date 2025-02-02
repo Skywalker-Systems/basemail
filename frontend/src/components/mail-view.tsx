@@ -23,10 +23,20 @@ export function MailView({ email }: MailViewProps) {
   const [replyContent, setReplyContent] = useState("")
   const { address } = useAccount()
   const [localEmail, setLocalEmail] = useState<Email | null>(null)
+  const [base64Name, setBase64Name] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'summary' | 'full' | 'html'>('summary')
   const { isSignedIn, user } = useUser()
-  const { name } = useName({ address: address as `0x${string}`, chain: base })
-  const base64Name = Buffer.from(name.replace('.base.eth', '')).toString('base64')
+  const { data: name, isLoading: isLoadingName } = useName({
+    address: address as `0x${string}`,
+    chain: base,
+  });
+
+  useEffect(() => {
+    if (name) {
+      const base64Name = Buffer.from(name.replace('.base.eth', '')).toString('base64')
+      setBase64Name(base64Name)
+    }
+  }, [name])
 
   const websocketUrl = isSignedIn && user && base64Name ? `${wsUrl}?userId=${base64Name}` : ''
   const { status: wsStatus } = useWebSocket({
