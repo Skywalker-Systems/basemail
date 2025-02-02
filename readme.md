@@ -57,4 +57,74 @@ Basemail is composed of three main AWS CloudFormation stacks (built with AWS CDK
 4. **Interactive Inbox:**  
    Users can interact with their inbox both via a traditional API and a WebSocket-enabled real-time chat interface. A voice-enabled agent further offers natural language interaction with email content.
 
-## Project Structure
+## Getting Started
+
+### Prerequisites
+
+- **AWS Account:** Ensure you have an active AWS account with proper permissions.
+- **AWS CDK:** Install and configure the AWS CDK.
+- **Node.js:** Ensure Node.js and npm/yarn are installed.
+- **Environment Variables:** Set the following variables in your deployment environment:
+  - `CLERK_SECRET_KEY`
+  - `DISCORD_WEBHOOK_URL`
+  - `PINECONE_DB`
+  - `PINECONE_SECRET_ARN`
+  - _[Any others as needed]_
+
+### Installation & Deployment
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+3. **Bootstrap CDK (if needed) & deploy:**
+
+   ```bash
+   npx cdk bootstrap
+   npx cdk deploy
+   ```
+
+   Deploy each stack as needed:
+
+   - Basemail Mail Stack
+   - Basemail API Stack
+   - Basemail Bedrock Stack
+
+## Usage
+
+- **Email Functionality:**  
+  Once deployed, simply use your basename (e.g., `john`) to access your personalized email inbox at `john@basemail.me`.
+
+- **AI Interaction:**  
+  Access summarized and formatted emails via our web API or use the voice agent for a conversational experience to query and interact with your emails.
+
+- **Real-Time Updates:**  
+  Connect via the provided WebSocket endpoint for live interaction and updates.
+
+## Future Roadmap
+
+- **Enhanced AI Models:**  
+  Integrate additional machine learning models to further improve summarization and content extraction.
+
+- **Voice Agent Improvements:**  
+  Expand the voice-enabled functionality with advanced natural language processing and broader language support.
+
+- **User Interface:**  
+  Develop dedicated client applications (web and mobile) that fully leverage Basemail's backend capabilities.
+
+## License
+
+This project is released under the [MIT License](LICENSE).
+
+## Acknowledgments
+
+Developed as part of a 48-hour hackathon, Basemail is a demonstration of rapid prototyping combined with powerful AWS services and innovative AI integration.
