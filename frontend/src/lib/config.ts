@@ -7,6 +7,7 @@ export const wagmiConfig = createConfig({
     connectors: [
         coinbaseWallet({
             appName: 'Basemail',
+            appLogoUrl: '/b_trasnparent.png',
         }),
     ],
     ssr: true,
