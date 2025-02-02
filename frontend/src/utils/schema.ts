@@ -64,7 +64,6 @@ export async function getMail() {
                 Authorization: `Bearer ${token}`
             }
         });
-        console.log(JSON.stringify(res));
 
         if (!res.ok) {
             throw new Error(`Failed to fetch emails data ${res.status} - ${res.ok}`);

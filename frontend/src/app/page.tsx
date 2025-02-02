@@ -1,23 +1,22 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {  Mail, User, Wallet, LockIcon } from "lucide-react";
-import Link from "next/link";
-import { useAccount, useConnect } from 'wagmi';
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
+import { SignedOut, SignInButton } from "@clerk/nextjs";
 import { useName } from '@coinbase/onchainkit/identity';
-import { base } from 'viem/chains';
-import { SignInButton } from "@clerk/nextjs";
-import { SignedOut } from "@clerk/nextjs";
+import { LockIcon, Mail, User } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from 'next/navigation';
+import { base } from 'viem/chains';
+import { useAccount } from 'wagmi';
 
 export default function Home() {
   const router = useRouter();
   const { address, isConnected } = useAccount();
-  const { data: name, isLoading: isLoadingName } = useName({ 
-    address: address as `0x${string}`, 
+  const { data: name, isLoading: isLoadingName } = useName({
+    address: address as `0x${string}`,
     chain: base,
-    
+
   });
 
   return (
@@ -34,7 +33,7 @@ export default function Home() {
           <source src="videos/globe.webm" type="video/webm" />
         </video>
       </div>
-    
+
       <section className="container relative mx-auto px-4 py-24 max-w-[1200px]">
         {/* Main Heading - centered */}
         <h1 className="text-[64px] font-bold leading-tight mb-12 text-center">
@@ -44,13 +43,13 @@ export default function Home() {
         {/* Add wallet connection section before features */}
         <div className="text-center mb-16">
           {!isConnected ? (
-                <SignedOut>
-                   <SignInButton mode="modal">
-                    <Button>
-                      Sign In
-                    </Button>
-                  </SignInButton>
-                </SignedOut>
+            <SignedOut>
+              <SignInButton mode="modal">
+                <Button>
+                  Sign In
+                </Button>
+              </SignInButton>
+            </SignedOut>
           ) : isLoadingName ? (
             <div className="text-lg">Checking your Base name...</div>
           ) : name ? (
@@ -85,7 +84,7 @@ export default function Home() {
                 <div className="space-y-1">
                   <CardTitle className="text-2xl">Your Identity, Your Inbox</CardTitle>
                   <CardDescription className="text-gray-600">
-                  Let your Base name do more. Your onchain identity unlocks a verified inbox that champions your digital presence.
+                    Let your Base name do more. Your onchain identity unlocks a verified inbox that champions your digital presence.
                   </CardDescription>
                 </div>
               </CardContent>
@@ -123,7 +122,7 @@ export default function Home() {
                 <div className="space-y-1">
                   <CardTitle className="text-2xl">Your Email Wallet</CardTitle>
                   <CardDescription className="text-gray-600">
-                     Turn your inbox into a secure wallet. Send and receive with the simplicity you expect—and the power you deserve.
+                    Turn your inbox into a secure wallet. Send and receive with the simplicity you expect—and the power you deserve.
                   </CardDescription>
                 </div>
               </CardContent>

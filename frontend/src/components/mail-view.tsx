@@ -11,15 +11,17 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { useAccount } from "wagmi"
 import { base } from "wagmi/chains"
-import { revalidateMail, sendReply } from "./actions"
+import { sendReply } from "./actions"
 
 const wsUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL
 
 interface MailViewProps {
   email: Email | null
+  isRefreshing: boolean
+  handleRefresh: () => void
 }
 
-export function MailView({ email }: MailViewProps) {
+export function MailView({ email, isRefreshing, handleRefresh }: MailViewProps) {
   const [replyContent, setReplyContent] = useState("")
   const { address } = useAccount()
   const [localEmail, setLocalEmail] = useState<Email | null>(null)
@@ -43,9 +45,8 @@ export function MailView({ email }: MailViewProps) {
     url: websocketUrl,
     enabled: isSignedIn && !!websocketUrl && !!base64Name,
     onMessage: async (data: any) => {
-      const message = JSON.parse(JSON.stringify(data));
-      console.log(message)
-      await revalidateMail()
+      console.log('onMessage', data)
+      handleRefresh()
     },
     onConnect: () => console.log(`Connected to host`),
     onDisconnect: () => console.log(`Disconnected from host`)
@@ -175,33 +176,53 @@ export function MailView({ email }: MailViewProps) {
         </div>
       </ScrollArea>
 
-      {/* Fixed footer with view mode buttons */}
+      {/* Fixed footer with refresh and view mode buttons */}
       <div className="fixed bottom-0 left-0 right-0 bg-card z-10 p-2 shadow-inner">
-        <div className="flex justify-end items-center gap-2">
+        <div className="flex justify-between items-center">
+          {/* Refresh Button */}
           <Button
-            variant={viewMode === 'summary' ? 'default' : 'ghost'}
+            onClick={handleRefresh}
+            variant="ghost"
             size="sm"
-            onClick={() => setViewMode('summary')}
             className="flex items-center gap-2"
           >
-            Summary
+            <svg
+              className={`w-5 h-5 ${isRefreshing ? "animate-spin" : ""}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.05 11a9 9 0 0114.142-5.657M9.172 4.93A9 9 0 0111 12v1m6 6a9 9 0 01-14.14 0M12 11V4" />
+            </svg>
           </Button>
-          <Button
-            variant={viewMode === 'full' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => setViewMode('full')}
-            className="flex items-center gap-2"
-          >
-            Full Text
-          </Button>
-          <Button
-            variant={viewMode === 'html' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => setViewMode('html')}
-            className="flex items-center gap-2"
-          >
-            HTML
-          </Button>
+
+          {/* Existing View Mode Buttons */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant={viewMode === 'summary' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('summary')}
+              className="flex items-center gap-2"
+            >
+              Summary
+            </Button>
+            <Button
+              variant={viewMode === 'full' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('full')}
+              className="flex items-center gap-2"
+            >
+              Full Text
+            </Button>
+            <Button
+              variant={viewMode === 'html' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('html')}
+              className="flex items-center gap-2"
+            >
+              HTML
+            </Button>
+          </div>
         </div>
       </div>
     </div>
