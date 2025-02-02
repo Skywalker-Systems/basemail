@@ -7,6 +7,7 @@ import { MailList } from "./mail-list"
 import { MailSidebar } from "./mail-siderbar"
 import { MailToolbar } from "./mail-toolbar"
 import { MailView } from "./mail-view"
+import { AudioControls } from "./audio-controls"
 
 export function EmailInterface({ emails }: { emails: Email[] }) {
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null)
@@ -32,7 +33,7 @@ export function EmailInterface({ emails }: { emails: Email[] }) {
           />
         </div>
       </div>
-      <FloatingAudioPlayer audioUrl={currentAudioUrl} onClose={() => setCurrentAudioUrl(null)} />
+      <AudioControls />
     </div>
   )
 }
