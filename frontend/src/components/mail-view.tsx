@@ -6,9 +6,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { useWebSocket } from "@/hooks/use-websocket"
 import { Email } from "@/utils/schema"
 import { useUser } from "@clerk/nextjs"
-import { Avatar } from '@coinbase/onchainkit/identity'
+import { Avatar, useName } from '@coinbase/onchainkit/identity'
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
+import { useAccount } from "wagmi"
+import { base } from "wagmi/chains"
 import { revalidateMail, sendReply } from "./actions"
 
 const wsUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL
@@ -19,14 +21,17 @@ interface MailViewProps {
 
 export function MailView({ email }: MailViewProps) {
   const [replyContent, setReplyContent] = useState("")
+  const { address } = useAccount()
   const [localEmail, setLocalEmail] = useState<Email | null>(null)
   const [viewMode, setViewMode] = useState<'summary' | 'full' | 'html'>('summary')
   const { isSignedIn, user } = useUser()
+  const { name } = useName({ address: address as `0x${string}`, chain: base })
+  const base64Name = Buffer.from(name.replace('.base.eth', '')).toString('base64')
 
-  const websocketUrl = isSignedIn && user ? `${wsUrl}?userId=${user.id}` : ''
+  const websocketUrl = isSignedIn && user && base64Name ? `${wsUrl}?userId=${base64Name}` : ''
   const { status: wsStatus } = useWebSocket({
     url: websocketUrl,
-    enabled: isSignedIn && !!websocketUrl,
+    enabled: isSignedIn && !!websocketUrl && !!base64Name,
     onMessage: async (data: any) => {
       const message = JSON.parse(JSON.stringify(data));
       console.log(message)
