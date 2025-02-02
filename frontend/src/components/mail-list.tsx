@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Email } from "@/utils/schema"
 // import type { Email } from "@/types/email"
 import { Play } from "lucide-react"
+import { AudioControls } from "./audio-controls"
 
 const formatEmailTime = (dateString: string) => {
   const date = new Date(dateString);
@@ -32,7 +33,7 @@ export function MailList({ emails, selectedEmail, onSelectEmail, onPlayAudio, vi
           >
             <button onClick={() => onSelectEmail(email)} className="flex-1 text-left">
               <div className="flex items-start justify-between gap-2">
-                <span className="font-medium text-foreground">{email.from}</span>
+                <span className="font-medium text-foreground">{email.from.replace('@basemail.me', '.base.eth')}</span>
                 <span className="text-xs text-muted-foreground">{formatEmailTime(email.date)}</span>
               </div>
               <div className="flex flex-col gap-1">
@@ -50,14 +51,7 @@ export function MailList({ emails, selectedEmail, onSelectEmail, onPlayAudio, vi
               )}
             </button>
             {(
-              <Button
-                variant="ghost"
-                size="icon"
-                className="ml-2 flex-shrink-0"
-              // onClick={() => onPlayAudio(email.audioSummaryUrl!)}
-              >
-                <Play className="h-4 w-4" />
-              </Button>
+               <AudioControls email={email} />
             )}
           </div>
         ))}

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@11labs/react": "^0.0.6",
     "@clerk/nextjs": "^6.10.6",
     "@coinbase/onchainkit": "^0.36.9",
     "@heroicons/react": "^2.2.0",

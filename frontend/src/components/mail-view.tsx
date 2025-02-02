@@ -3,12 +3,16 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Textarea } from "@/components/ui/textarea"
+import { useWebSocket } from "@/hooks/use-websocket"
 import { Email } from "@/utils/schema"
+import { useUser } from "@clerk/nextjs"
 import { Avatar } from '@coinbase/onchainkit/identity'
 import { ArrowsPointingInIcon, ArrowsPointingOutIcon } from "@heroicons/react/24/outline"
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
-import { sendReply } from "./actions"
+import { revalidateMail, sendReply } from "./actions"
+
+const wsUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL
 
 interface MailViewProps {
   email: Email | null
@@ -18,6 +22,25 @@ export function MailView({ email }: MailViewProps) {
   const [replyContent, setReplyContent] = useState("")
   const [localEmail, setLocalEmail] = useState<Email | null>(null)
   const [showFullEmail, setShowFullEmail] = useState(false)
+  const { isSignedIn, user } = useUser()
+
+  const websocketUrl = isSignedIn && user ? `${wsUrl}?userId=${user.id}` : ''
+  const { status: wsStatus } = useWebSocket({
+    url: websocketUrl,
+    enabled: isSignedIn && !!websocketUrl,
+    onMessage: async (data: any) => {
+      const message = JSON.parse(JSON.stringify(data));
+      const _message = message;
+      console.log(_message)
+      revalidateMail()
+    },
+    onConnect: () => {
+      console.log(`Connected to host`);
+    },
+    onDisconnect: () => {
+      console.log(`Disconnected from host`);
+    }
+  });
 
   useEffect(() => {
     setLocalEmail(email)
@@ -49,8 +72,8 @@ export function MailView({ email }: MailViewProps) {
               <h2 className="text-2xl font-semibold text-foreground">{localEmail.subject}</h2>
             </div>
             <div className="mt-2">
-              <div className="text-sm font-medium text-foreground">{localEmail.from}</div>
-              {localEmail.from && <div className="text-xs text-muted-foreground">Reply-To: {localEmail.from}</div>}
+              <div className="text-sm font-medium text-foreground">{localEmail.from.replace('@basemail.me', '.base.eth')}</div>
+              {localEmail.from && <div className="text-xs text-muted-foreground">Reply-To: {localEmail.from.replace('@basemail.me', '.base.eth')}</div>}
               <div className="text-xs text-muted-foreground">{localEmail.date}</div>
               {localEmail.tags && localEmail.tags.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-1">

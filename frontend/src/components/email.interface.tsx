@@ -2,7 +2,6 @@
 
 import { Email } from "@/utils/schema"
 import { useState } from "react"
-import { FloatingAudioPlayer } from "./floating-audio-player"
 import { MailList } from "./mail-list"
 import { MailSidebar } from "./mail-siderbar"
 import { MailToolbar } from "./mail-toolbar"
@@ -13,8 +12,12 @@ export function EmailInterface({ emails }: { emails: Email[] }) {
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null)
   const [view, setView] = useState<"all" | "unread">("all")
   const [currentAudioUrl, setCurrentAudioUrl] = useState<string | null>(null)
+  
+
+
 
   return (
+    
     <div className="flex h-screen relative">
       <MailSidebar />
       <div className="flex flex-1 flex-col">
@@ -33,7 +36,7 @@ export function EmailInterface({ emails }: { emails: Email[] }) {
           />
         </div>
       </div>
-      <AudioControls />
+      
     </div>
   )
 }
