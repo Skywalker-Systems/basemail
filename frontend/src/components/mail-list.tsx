@@ -1,9 +1,7 @@
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Email } from "@/utils/schema"
 // import type { Email } from "@/types/email"
-import { Play } from "lucide-react"
 import { AudioControls } from "./audio-controls"
 
 const formatEmailTime = (dateString: string) => {
@@ -21,11 +19,12 @@ interface MailListProps {
 
 export function MailList({ emails, selectedEmail, onSelectEmail, onPlayAudio, view }: MailListProps) {
   const filteredEmails = view === "unread" ? emails.filter((email) => !email.read) : emails
+  const sortedEmailsByCreatedAt = filteredEmails.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   return (
     <ScrollArea className="w-[400px] flex-shrink-0 border-r border-border bg-card">
       <div className="flex flex-col">
-        {filteredEmails.map((email) => (
+        {sortedEmailsByCreatedAt.map((email) => (
           <div
             key={email.sk}
             className={`flex items-center justify-between border-b border-border p-4 transition-colors hover:bg-accent ${selectedEmail?.sk === email.sk ? "bg-primary/10" : ""
@@ -51,7 +50,7 @@ export function MailList({ emails, selectedEmail, onSelectEmail, onPlayAudio, vi
               )}
             </button>
             {(
-               <AudioControls email={email} />
+              <AudioControls email={email} />
             )}
           </div>
         ))}
