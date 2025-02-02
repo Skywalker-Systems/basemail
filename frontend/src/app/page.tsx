@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Search, Mail } from "lucide-react";
+import {  Mail, User, Wallet, LockIcon } from "lucide-react";
 import Link from "next/link";
 import { useAccount, useConnect } from 'wagmi';
 import { useName } from '@coinbase/onchainkit/identity';
@@ -38,7 +38,7 @@ export default function Home() {
       <section className="container relative mx-auto px-4 py-24 max-w-[1200px]">
         {/* Main Heading - centered */}
         <h1 className="text-[64px] font-bold leading-tight mb-24 text-center">
-          BaseMail<br />Your smart email
+          Base Mail<br />AI email reimagined. Powered by Base
         </h1>
 
         {/* Add wallet connection section before features */}
@@ -75,13 +75,13 @@ export default function Home() {
               <CardContent className="flex items-center gap-6 p-6">
                 <div className="rounded-xl bg-blue-500 p-4 w-16 h-16 flex items-center justify-center">
                   <div className="text-white">
-                    <Search className="h-8 w-8" />
+                    <User className="h-8 w-8" />
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <CardTitle className="text-2xl">Your onchain identity gets an inbox</CardTitle>
+                  <CardTitle className="text-2xl">Your Identity, Your Inbox</CardTitle>
                   <CardDescription className="text-gray-600">
-                    Use your Basename as your onchain identity and your inbox.
+                  Let your Base name do more. Your onchain identity unlocks a verified inbox that champions your digital presence.
                   </CardDescription>
                 </div>
               </CardContent>
@@ -94,13 +94,13 @@ export default function Home() {
               <CardContent className="flex items-center gap-6 p-6">
                 <div className="rounded-xl bg-emerald-500 p-4 w-16 h-16 flex items-center justify-center">
                   <div className="text-white">
-                    <Mail className="h-8 w-8" />
+                    <LockIcon className="h-8 w-8" />
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <CardTitle className="text-2xl">Your emails wallet</CardTitle>
+                  <CardTitle className="text-2xl">Instant Trust, Instant Verify</CardTitle>
                   <CardDescription className="text-gray-600">
-                    Send and receive seamlessly just by simply using your email.
+                    Verify official emails with a single click. With BaseMail, authenticity isn’t just promised—it’s proven.
                   </CardDescription>
                 </div>
               </CardContent>
@@ -117,9 +117,9 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <CardTitle className="text-2xl">Trust & Verify</CardTitle>
+                  <CardTitle className="text-2xl">Your Email Wallet</CardTitle>
                   <CardDescription className="text-gray-600">
-                    Verify any official emails with a simple click.
+                     Turn your inbox into a secure wallet. Send and receive with the simplicity you expect—and the power you deserve.
                   </CardDescription>
                 </div>
               </CardContent>
