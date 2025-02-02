@@ -1,9 +1,8 @@
-import { Archive, File, Inbox, MessageSquare, ShoppingCart, Trash, Send, Clock, Tags, Headphones } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Archive, Clock, File, Headphones, Inbox, MessageSquare, Send, ShoppingCart, Tags, Trash } from "lucide-react"
 import { NavGroup } from "./nav-group"
 import { NavItem } from "./nav-item"
 
-import { AudioControls } from "../audio-controls"
 
 const mainNavigation = [
   { icon: Inbox, label: "Inbox", count: 128 },
@@ -41,7 +40,7 @@ export function MailSidebar({
 }: MailSidebarProps) {
   return (
     <div className="flex w-[280px] flex-col gap-6 bg-card p-4">
-      
+
       <nav className="flex flex-1 flex-col gap-4">
         <NavGroup>
           {mainNavigation.map((item) => (
@@ -55,14 +54,14 @@ export function MailSidebar({
         </NavGroup>
       </nav>
       <div className="mt-auto">
-        {isAudioPlaying ? (
-          <AudioControls isPlaying={isAudioPlaying} onPlay={onPlayAudio} onPause={onPauseAudio} onStop={onStopAudio} />
-        ) : (
-          <Button variant="outline" className="w-full justify-start" onClick={onSummarizeAll} disabled={isSummarizing}>
-            <Headphones className="mr-2 h-4 w-4" />
-            {isSummarizing ? "Summarizing..." : "Summarize All Mail"}
-          </Button>
-        )}
+        {/* {isAudioPlaying ? (
+          <AudioControls email={email} />
+        ) : ( */}
+        <Button variant="outline" className="w-full justify-start" onClick={onSummarizeAll} disabled={isSummarizing}>
+          <Headphones className="mr-2 h-4 w-4" />
+          {isSummarizing ? "Summarizing..." : "Summarize All Mail"}
+        </Button>
+        {/* )} */}
       </div>
     </div>
   )
