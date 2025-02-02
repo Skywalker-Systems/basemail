@@ -37,16 +37,20 @@ export default function Home() {
     
       <section className="container relative mx-auto px-4 py-24 max-w-[1200px]">
         {/* Main Heading - centered */}
-        <h1 className="text-[64px] font-bold leading-tight mb-24 text-center">
-          Base Mail<br />AI email reimagined. Powered by Base
+        <h1 className="text-[64px] font-bold leading-tight mb-12 text-center">
+          Base Mail<br />Intelligence in your inbox
         </h1>
 
         {/* Add wallet connection section before features */}
         <div className="text-center mb-16">
           {!isConnected ? (
-                   <SignedOut>
-                   <SignInButton mode="modal" />
-                 </SignedOut>
+                <SignedOut>
+                   <SignInButton mode="modal">
+                    <Button>
+                      Sign In
+                    </Button>
+                  </SignInButton>
+                </SignedOut>
           ) : isLoadingName ? (
             <div className="text-lg">Checking your Base name...</div>
           ) : name ? (
