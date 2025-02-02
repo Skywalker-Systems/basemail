@@ -28,6 +28,7 @@ export const mailSchema = z.object({
     pk: z.string(),
     inboxId: z.string(),
     rawAddress: z.string(),
+    html: z.string().optional(),
     to: z.string(),
     tags: z.array(z.string()).optional(),
     links: z.array(z.string()).optional(),
@@ -109,7 +110,7 @@ export async function putReply(email: string, replyContent: string) {
 
     try {
         const url = `${API_URL}/mail`
-        console.log(url);
+
         const res = await fetch(url, {
             method: "PUT",
             headers: {
@@ -121,7 +122,6 @@ export async function putReply(email: string, replyContent: string) {
                 reply: replyContent
             })
         });
-        console.log(JSON.stringify(res));
         if (!res.ok) {
             throw new Error(`Failed to send reply ${res.status} - ${res.ok}`);
         }

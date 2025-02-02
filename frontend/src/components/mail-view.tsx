@@ -7,7 +7,6 @@ import { useWebSocket } from "@/hooks/use-websocket"
 import { Email } from "@/utils/schema"
 import { useUser } from "@clerk/nextjs"
 import { Avatar } from '@coinbase/onchainkit/identity'
-import { ArrowsPointingInIcon, ArrowsPointingOutIcon } from "@heroicons/react/24/outline"
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { revalidateMail, sendReply } from "./actions"
@@ -21,7 +20,7 @@ interface MailViewProps {
 export function MailView({ email }: MailViewProps) {
   const [replyContent, setReplyContent] = useState("")
   const [localEmail, setLocalEmail] = useState<Email | null>(null)
-  const [showFullEmail, setShowFullEmail] = useState(false)
+  const [viewMode, setViewMode] = useState<'summary' | 'full' | 'html'>('summary')
   const { isSignedIn, user } = useUser()
 
   const websocketUrl = isSignedIn && user ? `${wsUrl}?userId=${user.id}` : ''
@@ -30,21 +29,29 @@ export function MailView({ email }: MailViewProps) {
     enabled: isSignedIn && !!websocketUrl,
     onMessage: async (data: any) => {
       const message = JSON.parse(JSON.stringify(data));
-      const _message = message;
-      console.log(_message)
+      console.log(message)
       revalidateMail()
     },
-    onConnect: () => {
-      console.log(`Connected to host`);
-    },
-    onDisconnect: () => {
-      console.log(`Disconnected from host`);
-    }
+    onConnect: () => console.log(`Connected to host`),
+    onDisconnect: () => console.log(`Disconnected from host`)
   });
 
   useEffect(() => {
     setLocalEmail(email)
-  }, [email])
+  }, [email]);
+
+  const getEmailContent = () => {
+    switch (viewMode) {
+      case 'summary':
+        return localEmail?.summarizedEmail || localEmail?.body
+      case 'html':
+        return localEmail?.html ? (
+          <div dangerouslySetInnerHTML={{ __html: localEmail.html }} />
+        ) : localEmail?.body
+      case 'full':
+        return localEmail?.body
+    }
+  }
 
   if (!localEmail) {
     return (
@@ -55,65 +62,59 @@ export function MailView({ email }: MailViewProps) {
   }
 
   return (
-    <ScrollArea className="flex-1 bg-card px-6">
-      <div className="mx-auto max-w-3xl py-6">
-        <div className="flex items-start gap-4">
-          {localEmail.wallet && <Avatar className="bg-primary" address={localEmail.wallet}>
-            <AvatarFallback className="text-primary-foreground">
-              {localEmail.from
-                .split(" ")
-                .map((n) => n[0])
-                .join("")}
-            </AvatarFallback>
-          </Avatar>
-          }
-          <div className="flex-1">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-foreground">{localEmail.subject}</h2>
-            </div>
-            <div className="mt-2">
-              <div className="text-sm font-medium text-foreground">{localEmail.from.replace('@basemail.me', '.base.eth')}</div>
-              {localEmail.from && <div className="text-xs text-muted-foreground">Reply-To: {localEmail.from.replace('@basemail.me', '.base.eth')}</div>}
-              <div className="text-xs text-muted-foreground">{localEmail.date}</div>
-              {localEmail.tags && localEmail.tags.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
-                  {localEmail.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="rounded-lg bg-secondary text-xs font-normal">
-                      {tag}
-                    </Badge>
-                  ))}
+    <div className="relative flex flex-col h-screen">
+      <ScrollArea className="flex-1 bg-card px-6 pb-24">
+        <div className="mx-auto max-w-3xl py-6">
+          <div className="flex items-start gap-4">
+            {localEmail.wallet && (
+              <Avatar className="bg-primary" address={localEmail.wallet}>
+                <AvatarFallback className="text-primary-foreground">
+                  {localEmail.from
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
+                </AvatarFallback>
+              </Avatar>
+            )}
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-semibold text-foreground">
+                  {localEmail.subject}
+                </h2>
+              </div>
+              <div className="mt-2">
+                <div className="text-sm font-medium text-foreground">
+                  {localEmail.from.replace('@basemail.me', '.base.eth')}
                 </div>
-              )}
-            </div>
-            <div className="mt-8 space-y-6">
-              <div className="relative">
-                <div className="flex justify-between items-center mb-4">
-                  <div className="w-full" />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowFullEmail(!showFullEmail)}
-                    className="flex items-center gap-2 shrink-0"
-                  >
-                    {showFullEmail ? (
-                      <ArrowsPointingInIcon className="h-4 w-4" />
-                    ) : (
-                      <ArrowsPointingOutIcon className="h-4 w-4" />
-                    )}
-                    {showFullEmail ? 'Show Summary' : 'Show Full Email'}
-                  </Button>
+                {localEmail.from && (
+                  <div className="text-xs text-muted-foreground">
+                    Reply-To: {localEmail.from.replace('@basemail.me', '.base.eth')}
+                  </div>
+                )}
+                <div className="text-xs text-muted-foreground">
+                  {localEmail.date}
                 </div>
-
+                {localEmail.tags && localEmail.tags.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {localEmail.tags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="rounded-lg bg-secondary text-xs font-normal">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="relative flex-1 overflow-auto pb-20 mt-8">
                 <AnimatePresence mode="wait">
                   <motion.div
-                    key={showFullEmail ? 'full' : 'summary'}
+                    key={viewMode}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.2 }}
-                    className="whitespace-pre-wrap text-sm text-foreground"
+                    className={`text-sm text-foreground ${viewMode === 'full' ? 'whitespace-pre-wrap' : ''}`}
                   >
-                    {showFullEmail || !localEmail.summarizedEmail ? localEmail.body : localEmail.summarizedEmail}
+                    {getEmailContent()}
                   </motion.div>
                 </AnimatePresence>
               </div>
@@ -157,8 +158,38 @@ export function MailView({ email }: MailViewProps) {
             </div>
           </div>
         </div>
+      </ScrollArea>
+
+      {/* Fixed footer with view mode buttons */}
+      <div className="fixed bottom-0 left-0 right-0 bg-card z-10 p-2 shadow-inner">
+        <div className="flex justify-end items-center gap-2">
+          <Button
+            variant={viewMode === 'summary' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setViewMode('summary')}
+            className="flex items-center gap-2"
+          >
+            Summary
+          </Button>
+          <Button
+            variant={viewMode === 'full' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setViewMode('full')}
+            className="flex items-center gap-2"
+          >
+            Full Text
+          </Button>
+          <Button
+            variant={viewMode === 'html' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setViewMode('html')}
+            className="flex items-center gap-2"
+          >
+            HTML
+          </Button>
+        </div>
       </div>
-    </ScrollArea>
+    </div>
   )
 }
 
